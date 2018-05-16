@@ -23,7 +23,7 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * websocket
  */
 
 var io = socket(server);
@@ -35,6 +35,10 @@ io.on('connection', function(socket){
     socket.broadcast.emit('typing', data);
   });
 });
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
 server.listen(port);
 server.on('error', onError);
