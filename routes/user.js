@@ -24,14 +24,14 @@ router.get('/signin', function(req, res, next) {
 module.exports = router;
 
 function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()){
+    if(req.isAuthenticated()) {
         return next();
     }
     res.redirect('/');
 }
   
 function notLoggedIn(req, res, next) {
-    if(!req.isAuthenticated()){
+    if(!req.isAuthenticated()) {
         return next();
     }
     res.redirect('/');

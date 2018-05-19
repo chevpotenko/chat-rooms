@@ -24,13 +24,13 @@ router.post('/', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-    Rooms.remove({_id: req.params.id}, function(err, result){
+    Rooms.remove({ _id: req.params.id }, function(err, result){
         res.json(result);
     });
 });
 
 router.put('/:id', function(req, res, next) {    
-    Rooms.findOneAndUpdate({_id: req.params.id}, req.body, function (err, room) {
+    Rooms.findOneAndUpdate({ _id: req.params.id }, req.body, function (err, room) {
         res.json(room);
     });
 });

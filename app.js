@@ -16,8 +16,11 @@ var apiRooms = require('./routes/api-rooms');
 var apiUsers = require('./routes/api-users');
 var apiUser = require('./routes/api-user');
 
-mongoose.connect('');
+var config = require('./config/config');
+
+mongoose.connect(config.db.connection);
 var db = mongoose.connection;
+
 db.once('open', function() {
     console.log('Connected to Mongo db');
 });
@@ -26,10 +29,6 @@ db.on('error', function(err) {
 });
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -50,12 +49,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport');
-
-app.use(function(req, res, next) {
-    res.locals.login = req.isAuthenticated();
-    res.locals.session = req.session;
-    next();
-});
 
 app.use('/', index);
 app.use('/user', user);
