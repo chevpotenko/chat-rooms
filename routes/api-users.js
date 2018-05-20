@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
         if(!user){
             res.status(401).send(info);
         }else{     
-            mailOptions.to = res.body.email;        
+            mailOptions.to = req.body.email;        
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
                     return console.log(error);
