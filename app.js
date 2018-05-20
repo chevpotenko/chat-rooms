@@ -16,7 +16,7 @@ var apiRooms = require('./routes/api-rooms');
 var apiUsers = require('./routes/api-users');
 var apiUser = require('./routes/api-user');
 
-var config = require('./config/config');
+var config = requireConfig('./config/config');
 
 mongoose.connect(config.db.connection);
 var db = mongoose.connection;
@@ -75,3 +75,16 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+function requireConfig(modulePath){
+    try {
+        return require(modulePath);
+    }
+    catch (e) {        
+        return {
+            db: {
+                connection: process.env.DB_CONNECTION
+            }
+        }
+    }
+}

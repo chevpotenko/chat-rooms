@@ -1,6 +1,7 @@
 var passport = require('passport');
 var User = require('../models/users');
 var LocalStrategy = require('passport-local').Strategy;
+var emailExistence = require('email-existence');
 
 passport.use('local.signup', new LocalStrategy({
         usernameField: 'email',
@@ -24,14 +25,22 @@ passport.use('local.signup', new LocalStrategy({
                 if(user) {
                     return done(null, false, { message: ['Email is already in use'] });            
                 }
-                var newUser = new User();
-                newUser.email = email;
-                newUser.password = newUser.encryptPassword(password);
-                newUser.save(function(err, result) {
-                    if(err) {
+                emailExistence.check(email, function(error, response){
+                    if (error) { 
                         return done(err);
                     }
-                    return done(null, newUser);
+                    if (!response) {
+                        return done(null, false, { message: ['Email address does not exist.'] });
+                    }
+                    var newUser = new User();
+                    newUser.email = email;
+                    newUser.password = newUser.encryptPassword(password);
+                    newUser.save(function(err, result) {
+                        if(err) {
+                            return done(err);
+                        }
+                        return done(null, newUser);
+                    });
                 });
             });
         }
